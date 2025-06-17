@@ -1,23 +1,29 @@
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
 import authroute from './routes/authRoute';
+import cookieParser from 'cookie-parser';
 import { DbConnection } from './config/Db';
+import dotenv from 'dotenv'
 
-dotenv.config();
+dotenv.config()
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors(
+ {
+   origin:['*']
+ }
+));
 app.use(express.json());
-
-
+app.use(cookieParser());
+console.log(process.env.MONGO_URL)
 DbConnection()
 
-const PORT = process.env.PORT || 5000;
-
+// Example Route
 app.use('/api/v1/auth', authroute);
 
+// Start Server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`🚀 Server listening on http://localhost:${PORT}`);
 });

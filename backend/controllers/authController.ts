@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
+import { JwtPayload } from 'jsonwebtoken';
 import User, { IUser } from '../models/user.model';
+import { log } from 'console';
 
 interface AuthRequest extends Request {
   user?: { id: string };
@@ -51,8 +53,11 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 };
 
 export const signup = async (req: Request, res: Response): Promise<void> => {
+  
   try {
     const { email, username, password } = req.body as { email?: string; username?: string; password?: string };
+    console.log(email,password,username,'hoo');
+    
     if (!email || !password || !username) {
       res.status(400).send({ success: false, message: 'Please provide email, username, and password' });
       return;
