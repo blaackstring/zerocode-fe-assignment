@@ -1,7 +1,8 @@
 import express, { Router } from 'express';
 import { login, logout, signup, verify } from '../controllers/authController';
-import { authMiddleware } from '../middleware/authMiddlewre';
+
 import asyncHandler from 'express-async-handler';
+import { authMiddleware } from '../middleware/authMiddleware';
 
 const authroute:Router = express.Router();
 

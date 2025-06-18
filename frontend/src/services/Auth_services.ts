@@ -58,11 +58,12 @@ try {
 
 export const logout=async()=>{
  try {
-        const res=await fetch('/api/v1/auth/login',{
+        const res=await fetch('/api/v1/auth/logout',{
         method:"DELETE",
         credentials:"include",
     })
 
+    alert('logout successfull');
     return res.json();
 } catch (error) {
     console.error("Network error during logout:", error);
@@ -74,15 +75,17 @@ export const logout=async()=>{
 
 export const verify=async()=>{
  try {
-        const res=await fetch('/api/v1/auth/login',{
+        const res=await fetch('/api/v1/auth/verify',{
         method:"GET",
         credentials:"include",
     })
 
+    console.log(res);
+    
     return res.json();
 } catch (error) {
-    console.error("Network error during logout:", error);
-    alert("Network error. Please try again.");
+    console.error("Network error during verify:", error);
+    alert("Network error  while verifying. Please try again.");
     return null;
   }
 

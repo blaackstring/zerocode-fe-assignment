@@ -101,10 +101,14 @@ export const logout = async (req: Request, res: Response): Promise<void> => {
 
 export const verify = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+
+    console.log(req.user);
+    
     if (!req.user || !req.user.id) {
       res.status(401).send({ success: false, message: 'Unauthorized' });
       return;
     }
+console.log('hii');
 
     const user = await User.findById(req.user.id).select('-password') as IUser | null;
     if (!user) {

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { chatContext } from '../../contextApi/chatContext';
 import type { Message } from '../../services/Request';
+import { logout } from '../../services/Auth_services';
 
 interface NavButtonProps {
   icon: React.ReactNode;
@@ -40,7 +41,7 @@ const NavButton: React.FC<NavButtonProps> = ({ icon, label, onClick, isActive = 
 const DropdownItem: React.FC<DropdownItemProps> = ({ label, onClick, icon }) => (
   <button
     onClick={onClick}
-    className="flex items-center space-x-3 w-full px-4 py-3 text-left text-gray-700  transition-colors"
+    className="flex cursor-pointer hover:bg-black hover:text-white hover:rounded ease-in-out duration-300 items-center space-x-3 w-full px-4 py-3 text-left text-gray-700  transition-colors"
   >
     {icon && <span className="text-gray-500">{icon}</span>}
     <span>{label}</span>
@@ -52,11 +53,10 @@ export default function ChatbotNavbar() {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [activeChat, setActiveChat] = useState<string>('current');
   const [isdark,setisdark]=useState<boolean>(true)
+  const{ userstate,onOpenLogin,onClose,onOpen,setUserstate}=useContext(chatContext);
 
 
-const {MessageApi, setMessageApi}=useContext(chatContext
-
-)
+const {MessageApi, setMessageApi}=useContext(chatContext)
 
 
 const generatePDF = (messages: Message[]=MessageApi) => {
@@ -108,30 +108,28 @@ const generatePDF = (messages: Message[]=MessageApi) => {
     setIsMenuOpen(false);
   };
 
-  const handleViewHistory = () => {
-    console.log('Opening chat history...');
-    setIsMenuOpen(false);
-  };
 
-  const handleSettings = () => {
-    console.log('Opening settings...');
-    setIsMenuOpen(false);
-  };
-
+const handlelogout=async()=>{
+  try {
+   const res= await logout()
+   if(res.success){
+    alert('logout successfull')
+setUserstate({
+  isLoggedIn:false,
+  username:'',
+  email:''
+})
+   }
+  } catch (error) {
+    console.error('error while logout',error)
+  }
+}
   const handleProfile = () => {
     setIsProfileOpen(!isProfileOpen);
   };
 
-  const handleLogout = () => {
-    console.log('Logging out...');
-    setIsProfileOpen(false);
-    setIsMenuOpen(false);
-  };
 
-  const handleAccountSettings = () => {
-    console.log('Opening account settings...');
-    setIsProfileOpen(false);
-  };
+
 
   useEffect(() => {
     if (isdark) {
@@ -144,7 +142,7 @@ const generatePDF = (messages: Message[]=MessageApi) => {
     }
   }, [isdark]);
   return (
-    <nav className="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg relative z-50">
+    <nav className="bg-gradient-to-r from-blue-600 to-purple-700 text-white shadow-lg relative ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -189,26 +187,28 @@ const generatePDF = (messages: Message[]=MessageApi) => {
                 <div className="bg-gradient-to-r from-pink-500 to-orange-500 p-1 rounded-full">
                   <User className="h-4 w-4" />
                 </div>
-                <span className="text-sm font-medium">John Doe</span>
+                <span className="text-sm font-medium">{userstate?.username||'User'}</span>
               </button>
 
               {isProfileOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
                   <div className="py-2">
+                   {!userstate.isLoggedIn&&<>
                     <DropdownItem
-                      label="Account Settings"
-                      onClick={handleAccountSettings}
+                      label="Login"
+                      onClick={onOpenLogin}
                       icon={<Settings className="h-4 w-4" />}
                     />
                     <DropdownItem
-                      label="Chat Preferences"
-                      onClick={() => console.log('Preferences')}
+                      label="Signup"
+                      onClick={onOpen}
                       icon={<MessageCircle className="h-4 w-4" />}
                     />
                     <hr className="my-2" />
+                   </>}
                     <DropdownItem
-                      label="Sign Out"
-                      onClick={handleLogout}
+                      label="Logout"
+                      onClick={handlelogout}
                       icon={<User className="h-4 w-4" />}
                     />
                   </div>
@@ -219,54 +219,47 @@ const generatePDF = (messages: Message[]=MessageApi) => {
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="md:hidden">
+          <div className="md:hidden ">
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-lg bg-white bg-opacity-10 hover:bg-opacity-20 transition-all"
+            
+              className="p-2 rounded-lg  bg-black/30 bg-opacity-10 hover:bg-opacity-20 transition-all"
             >
-              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              {isMenuOpen ? <X className="h-6 w-6 text-black" /> : <Menu className="h-6 w-6  text-black"   onClick={() => setIsMenuOpen(!isMenuOpen)} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
     {isMenuOpen && (
-  <div className=" absolute right-0 md:hidden bg-white text-black rounded-lg mt-2 mb-4 shadow-lg">
+  <div className=" absolute right-0 z-40 md:hidden bg-white text-black rounded-lg mt-2 mb-4 shadow-lg">
     <div className="px-2 pt-2 pb-3 space-y-2">
-  
-
-      <button
-        onClick={handleViewHistory}
-        className="flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-left hover:bg-gray-100 transition-all"
-      >
-        <History className="h-5 w-5 text-gray-700" />
-        <span>Chat History</span>
-      </button>
-
-      <button
-        onClick={handleSettings}
-        className="flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-left hover:bg-gray-100 transition-all"
-      >
-        <Settings className="h-5 w-5 text-gray-700" />
-        <span>Settings</span>
-      </button>
-
-      <hr className="border-gray-200 my-2" />
-
-      <button
-        onClick={handleLogout}
-        className="flex items-center space-x-3 w-full px-3 py-2 rounded-lg text-left hover:bg-gray-100 transition-all"
-      >
-        <User className="h-5 w-5 text-gray-700" />
-        <span>Sign Out</span>
-      </button>
+                   {!userstate.isLoggedIn&&<>
+                    <DropdownItem
+                      label="Login"
+                      onClick={onOpenLogin}
+                      icon={<Settings className="h-4 w-4" />}
+                    />
+                    <DropdownItem
+                      label="Signup"
+                      onClick={onOpen}
+                      icon={<MessageCircle className="h-4 w-4" />}
+                    />
+                    <hr className="my-2" />
+                   </>}
+                    
+                    <DropdownItem
+                      label="Logout"
+                      onClick={handlelogout}
+                      icon={<User className="h-4 w-4" />}
+                    />
+                 
     </div>
   </div>
 )}
 
       </div>
 
-      {/* Overlay to close menus */}
+
       {(isProfileOpen || isMenuOpen) && (
         <div
           className="fixed inset-0 z-30"

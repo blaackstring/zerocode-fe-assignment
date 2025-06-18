@@ -12,6 +12,7 @@ interface SendingRequestProps {
 export const SendingRequest = async ({ messages }: SendingRequestProps): Promise<Message> => {
   try {
   const chatCompletion = await client.chatCompletion({
+    provider:'groq',
   model: "meta-llama/Meta-Llama-3-8B-Instruct",
   messages
 });
