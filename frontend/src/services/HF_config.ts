@@ -1,3 +1,3 @@
 import { InferenceClient } from "@huggingface/inference";
 
-export const client = new InferenceClient('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');
+export const client1 = new InferenceClient('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');
