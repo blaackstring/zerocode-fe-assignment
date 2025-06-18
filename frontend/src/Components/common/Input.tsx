@@ -13,7 +13,7 @@ interface InputProps {
 
 const Input:React.FC<InputProps> = ({Input,setInput}) => {
   const [loading,setIsloading]=useState(false)
-  const {MessageApi, setMessageApi}=useContext(chatContext)
+  const {MessageApi, setMessageApi,userstate,onOpenLogin}=useContext(chatContext)
  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
     
@@ -26,7 +26,12 @@ const Input:React.FC<InputProps> = ({Input,setInput}) => {
          e.preventDefault()
 try {
 
-  if(!Input) return console.log('input required');
+  if(!userstate.isLoggedIn){
+    alert('Kindly Logged in for use');
+    setInput('');
+    onOpenLogin()
+  }
+  if(!Input ||!userstate.isLoggedIn) return console.log('input required');
   setIsloading(true)
 
   const NewMessagesArray:Message[]=[
@@ -34,6 +39,7 @@ try {
    { role:'user',content:Input}
    
   ]
+   setInput('');
   setMessageApi(NewMessagesArray); 
 
     const result=await SendingRequest({messages:NewMessagesArray})
@@ -49,7 +55,7 @@ try {
     setMessageApi(updatedMessage);
 
 
-    setInput('');
+   
     setIsloading(false)
 } catch (error) {
     console.error("Chat request failed:", error);
