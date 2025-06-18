@@ -21,7 +21,6 @@
     "mongodb": "^6.17.0"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
     "ts-node-dev": "^2.0.0",
     "@types/node": "^24.0.1",
     "@types/express": "^5.0.3",
