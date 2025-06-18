@@ -9,11 +9,14 @@ interface LogincredentialsProps{
     password:string
 }
 
+
+const baseurl='chat-bot-bakend.vercel.app'
+
 export const signup=async({username,email,password}:SignupcredentialsProps)=>{
     if(!email||!username||!password) return alert('All Fields Are Required')
 
 try {
-        const res=await fetch('/api/v1/auth/signup',{
+        const res=await fetch(`${baseurl}/api/v1/auth/signup`,{
         method:"POST",
         credentials:"include",
         headers:{
@@ -37,7 +40,7 @@ export const login=async({email,password}:LogincredentialsProps)=>{
     if(!email||!password) return alert('All Fields Are Required')
 
 try {
-        const res=await fetch('/api/v1/auth/login',{
+        const res=await fetch(`${baseurl}/api/v1/auth/login`,{
         method:"POST",
         credentials:"include",
         headers:{
@@ -58,7 +61,7 @@ try {
 
 export const logout=async()=>{
  try {
-        const res=await fetch('/api/v1/auth/logout',{
+        const res=await fetch(`${baseurl}/api/v1/auth/logout`,{
         method:"DELETE",
         credentials:"include",
     })
@@ -75,7 +78,7 @@ export const logout=async()=>{
 
 export const verify=async()=>{
  try {
-        const res=await fetch('/api/v1/auth/verify',{
+        const res=await fetch(`${baseurl}/api/v1/auth/verify`,{
         method:"GET",
         credentials:"include",
     })
