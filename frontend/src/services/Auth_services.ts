@@ -10,7 +10,7 @@ interface LogincredentialsProps{
 }
 
 
-const baseurl='https://chat-bot-bakend-git-main-blaackstrings-projects.vercel.app/'
+const baseurl='https://chat-bot-bakend-git-main-blaackstrings-projects.vercel.app'
 
 export const signup=async({username,email,password}:SignupcredentialsProps)=>{
     if(!email||!username||!password) return alert('All Fields Are Required')
