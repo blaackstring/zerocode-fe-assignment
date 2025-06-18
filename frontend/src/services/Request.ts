@@ -1,4 +1,4 @@
-import { client1 } from "./HF_config";
+import { client } from "./HF_config";
 
 export type Message = {
   role: "user" | "assistant" | "system";
@@ -11,7 +11,7 @@ interface SendingRequestProps {
 
 export const SendingRequest = async ({ messages }: SendingRequestProps): Promise<Message> => {
   try {
-  const chatCompletion = await client1.chatCompletion({
+  const chatCompletion = await client.chatCompletion({
     provider:'groq',
   model: "meta-llama/Meta-Llama-3-8B-Instruct",
   messages
