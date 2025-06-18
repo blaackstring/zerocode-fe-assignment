@@ -8,9 +8,4 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000 // increase limit (default is 500)
   },
   plugins: [react(), tailwindcss(),],
-  server:{
-    proxy:{
-      '/api':'http://localhost:3000'
-    }
-  }
 })
