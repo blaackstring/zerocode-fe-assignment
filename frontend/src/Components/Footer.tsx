@@ -7,7 +7,7 @@ function Footer() {
 
 
   return (
-    <div className="fixed bottom-5 flex justify-center w-full">
+    <div className="fixed bottom-5 z-88 flex justify-center w-full">
       <Input Input={input} setInput={setInput}  />
     </div>
   )
