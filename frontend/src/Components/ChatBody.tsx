@@ -11,7 +11,8 @@ const ChatBody: React.FC = () => {
   const [chats, setChats] = useState<Message[]>([
   ])
 
-  const {MessageApi, setMessageApi}=useContext(chatContext)
+  const {MessageApi, userstate,setMessageApi}=useContext(chatContext)
+  
 
   useEffect(()=>{
     console.log(MessageApi);
@@ -103,7 +104,13 @@ const ChatBody: React.FC = () => {
             <div className="inline-flex items-center px-6 py-3 bg-black/20 backdrop-blur-2xl rounded-full shadow-2xl border border-white/20 hover:scale-105 transition-transform duration-300">
               <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full mr-3 animate-pulse shadow-lg"></div>
               <span className="text-sm font-semibold text-white/90 tracking-wide">CHAT ACTIVE</span>
+ 
             </div>
+             {userstate?.isLoggedIn&&<div className="mt-4  "> <span className="text-lg border-1 p-2 font-bold  rounded  text-white/90 tracking-wide">
+              <span>
+               Welcome <span>{userstate?.username}</span>
+                </span>
+           </span></div>}
           </div>
 
           {chats.map((message, index) => (
