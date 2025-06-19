@@ -1,4 +1,4 @@
-# 🧠 ChatBit VO-1AI
+# 🧠 ChatBot VO-1AI
 
 ChatBit VO-1AI is a full-stack AI-powered chat application built with **React + TypeScript**, **Node.js**, **Express**, and **MongoDB**. It supports authentication, real-time messaging, night mode, and chat export features.
 
