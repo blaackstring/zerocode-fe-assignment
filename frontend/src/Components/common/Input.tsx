@@ -27,7 +27,7 @@ const Input:React.FC<InputProps> = ({Input,setInput}) => {
 try {
 
   if(!userstate.isLoggedIn){
-    alert('Kindly Logged in for use');
+    alert('Kindly Logged in to use');
     setInput('');
     onOpenLogin()
   }
