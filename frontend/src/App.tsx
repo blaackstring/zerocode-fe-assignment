@@ -19,6 +19,7 @@ function App() {
 const VerifyUser=async()=>{
     try {
       const res=await verify()
+      console.log(res+'from app');
         const {success,user}=res;
    
    if (success) {
