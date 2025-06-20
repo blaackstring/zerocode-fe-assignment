@@ -30,6 +30,7 @@ try {
     alert('Kindly Logged in to use');
     setInput('');
     onOpenLogin()
+    return;
   }
   if(!Input ||!userstate.isLoggedIn) return console.log('input required');
   setIsloading(true)
