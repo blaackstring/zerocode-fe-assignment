@@ -10,7 +10,7 @@ interface LogincredentialsProps{
 }
 
 
-const baseurl='http://chat-bot-bakend.vercel.app/'
+const baseurl='https://chat-bot-bakend-git-main-blaackstrings-projects.vercel.app'
 
 export const signup=async({username,email,password}:SignupcredentialsProps)=>{
     if(!email||!username||!password) return alert('All Fields Are Required')
@@ -88,7 +88,7 @@ export const verify=async()=>{
     return res.json();
 } catch (error) {
     console.error("Network error during verify:", error);
-    alert("Network error  while verifying. Please try again.");
+    
     return null;
   }
 

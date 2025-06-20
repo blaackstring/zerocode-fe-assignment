@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useContext, } from "react"
 import { chatContext } from "../contextApi/chatContext"
 import type { Message } from "../services/Request";
+import Code from "./Code";
+
 
 interface MessageBubbleProps {
   message: Message
@@ -10,6 +12,51 @@ interface MessageBubbleProps {
 const ChatBody: React.FC = () => {
   const [chats, setChats] = useState<Message[]>([
   ])
+
+
+
+  
+
+
+const extractMessageParts = (message: string) => {
+  const parts = []; // final result
+
+  // This pattern finds code blocks like ```js\nsome code\n```
+  const regex = /```(\w+)?\n([\s\S]*?)```/g;
+
+  let match;
+  let lastTextEnd = 0;
+
+  // Go through each code block found in the message
+  while ((match = regex.exec(message))) {
+    const codeStart = match.index;
+    const codeEnd = regex.lastIndex;
+
+    // Get text before the code block
+    const textBefore = message.slice(lastTextEnd, codeStart);
+    if (textBefore) {
+      parts.push({ type: "text", content: textBefore });
+    }
+
+    // Get code block and its language
+    const language = match[1] || "plaintext";
+    const code = match[2];
+    parts.push({ type: "code", content: code, language });
+
+    // Update position
+    lastTextEnd = codeEnd;
+  }
+
+  // Add any text after the last code block
+  const textAfter = message.slice(lastTextEnd);
+  if (textAfter) {
+    parts.push({ type: "text", content: textAfter });
+  }
+
+  return parts;
+};
+  
+  
 
   const {MessageApi, userstate,setMessageApi}=useContext(chatContext)
   
@@ -35,6 +82,7 @@ const ChatBody: React.FC = () => {
 
   const MessageBubble: React.FC<MessageBubbleProps> = ({ message, index }) => {
     const isUser = message.role === 'user'
+      const parts = extractMessageParts(message.content);
 
     return (
       <div
@@ -43,7 +91,7 @@ const ChatBody: React.FC = () => {
       >
         {!isUser && (
           <div className="flex-shrink-0 mr-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-violet-500/80 to-fuchsia-500/80 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-2xl border border-white/20 hover:scale-110 transition-transform duration-300">
+            <div className="w-12 h-12 bg-gradient-to-br backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-2xl border border-white/20 hover:scale-104 transition-transform duration-300">
               <span className="text-white text-sm font-bold">AI</span>
             </div>
           </div>
@@ -56,7 +104,15 @@ const ChatBody: React.FC = () => {
               : 'bg-black/10 text-white/95 border border-white/20 rounded-bl-lg'
           }`}>
             <div className="text-sm leading-relaxed font-medium">
-              {message.content}
+              <div className={`p-4 rounded-md ${message.role === "user" ? "bg-blue-100" : "bg-gray-100"} my-2`}>
+      {parts.map((part, index) =>
+        part.type === "code" ? (
+          <Code key={index} code={part.content} language={part.language} />
+        ) : (
+          <p key={index} className="text-gray-800 whitespace-pre-wrap">{part.content}</p>
+        )
+      )}
+    </div>
             </div>
 
             <div className={`absolute inset-0 rounded-[2rem] opacity-0 group-hover:opacity-30 transition-all duration-500 ${
@@ -81,7 +137,7 @@ const ChatBody: React.FC = () => {
   const TypingIndicator: React.FC = () => (
     <div className="flex justify-start mb-8 animate-fadeIn">
       <div className="flex-shrink-0 mr-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-violet-500/80 to-fuchsia-500/80 backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-2xl border border-white/20">
+        <div className="w-12 h-12 bg-gradient-to-br backdrop-blur-xl rounded-2xl flex items-center justify-center shadow-2xl border border-white/20">
           <span className="text-white text-sm font-bold">AI</span>
         </div>
       </div>
@@ -96,7 +152,7 @@ const ChatBody: React.FC = () => {
   )
 
   return (
-    <div className="w-full relative xl:h-[80vh] lg:h-[78vh] md:h-[80%] sm:h-full h-[79vh] mb-4 mt-1">
+    <div className="w-full relative xl:h-[80vh] lg:h-[78vh] md:h-[80%] sm:h-full h-[79vh]  mb-4 mt-1">
       {/* background and effects omitted for brevity (unchanged) */}
       <div className="relative z-10 h-full px-6 py-8 overflow-x-hidden overflow-y-auto">
         <div className="max-w-5xl mx-auto">
