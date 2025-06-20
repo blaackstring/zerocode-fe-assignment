@@ -88,7 +88,7 @@ export const verify=async()=>{
     return res.json();
 } catch (error) {
     console.error("Network error during verify:", error);
-    
+
     return null;
   }
 
