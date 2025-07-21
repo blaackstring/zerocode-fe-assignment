@@ -1,0 +1,31 @@
+name: deploy frontend on ec2
+
+on:
+ push:
+   branches: ['main']
+
+
+jobs:
+  deploy:
+    name: 📦 Deploy via SSH
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: 🔐 Checkout Code
+       uses: action/checkout@v3
+
+     - name: SSH and Deploy to EC2
+       uses: appleboy/ssh-action@v0.1.6
+       with:
+         host: ${{secrets.EC2_HOST}}
+         username: ${{secrets.EC2_USER}}
+         key: ${{ secrets.EC2_SSH_KEY }}
+         script: |
+            echo "[INFO] Starting deployment..."
+            cd /home/ubuntu/my-react-project
+            chmod +x deploy_frontend.sh
+            ./deploy_frontend.sh
+            echo "[INFO] Deployment complete!"
+
+
+      
