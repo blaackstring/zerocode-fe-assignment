@@ -148,8 +148,8 @@ setUserstate({
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <div>
-              <h1 className="text-lg font-bold">Vo-1AI</h1>
-              <p className="text-sm text-blue-100">Intelligent Assistant</p>
+              <h1 className="text-lg font-bold">VO-1AI</h1>
+              <p className="text-sm text-blue-100">Intelligent Assistant </p>
             </div>
           </div>
 
