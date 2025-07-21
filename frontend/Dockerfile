@@ -4,16 +4,11 @@ COPY package*.json ./
 RUN npm install
 
 
-
 FROM node:20-alpine AS build
-
 WORKDIR /app
-
 COPY --from=deps /app/node_modules ./node_modules
-
 COPY . .
-
-RUN npm run build
+RUN npm run build && ls -l ./build
 
 
 FROM nginx:1.21-alpine
