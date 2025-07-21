@@ -20,6 +20,7 @@ const VerifyUser=async()=>{
     try {
       const res=await verify()
         const {success,user}=res;
+   console.log(res);
    
    if (success) {
         setUserstate({
