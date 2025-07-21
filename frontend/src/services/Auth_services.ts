@@ -10,7 +10,8 @@ interface LogincredentialsProps{
 }
 
 
-const baseurl='http://localhost:4000'
+const baseurl='https://n4vj10uc10.execute-api.ap-south-1.amazonaws.com'
+
 
 export const signup=async({username,email,password}:SignupcredentialsProps)=>{
     if(!email||!username||!password) return alert('All Fields Are Required')
